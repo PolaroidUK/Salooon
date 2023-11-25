@@ -3,105 +3,70 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class SwimmerManager : MonoBehaviour
 {
-    [SerializeField] private List<Card> _cards;
-    [SerializeField] private List<Card> playerOne;    
-    [SerializeField] private List<Card> playerTwo;    
-    [SerializeField] private List<Card> playerThree;    
-    [SerializeField] private List<Card> playerFour;
-    [SerializeField] private List<Card> table;
-    [SerializeField] private int currentPlayerSelectedCard,currentTableSelectedCard;
-    [SerializeField] private List<PlayerCard> playerCards;
-    [SerializeField] private List<PlayerCard> tableCards;
-    [SerializeField] private TextMeshProUGUI scoreText;
-    [SerializeField] private TextMeshProUGUI p2Text, p3Text, p4Text;
+    public int currentPlayerSelectedCard,currentTableSelectedCard;
     [SerializeField] private int currentTurn;
-    [SerializeField] private bool firstRound =true;
+    [SerializeField] public bool firstRound =true;
     
     [SerializeField] private bool lastRound;
     [SerializeField] private bool gameEnded;
 
     [SerializeField] private float aiTimer;
     [SerializeField] private float aiTurnTime = 1;
+    [SerializeField] private List<CardVisual> deck;
+    [SerializeField] private Dog[] dogs = new Dog[3];
+    [SerializeField] private Table table;
+    [SerializeField] private Hoof hoof;
+    [SerializeField] private TextMeshProUGUI playerScore;
     
-    
-    
+    public event Action MoveCards;
+    public event Action UpdateHolders;
     public void SelectPlayerCard(int card)
     {
         currentPlayerSelectedCard = card;
-        UpdateCardVisuals();
     }
     public void SelectTableCard(int card)
     {
         currentTableSelectedCard = card;
-        UpdateCardVisuals();
-    }
-    public void Awake()
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            for (int j = 0; j < 8; j++)
-            {
-                _cards.Add(new Card((Suit)i,(Face)j));
-            }
-        }
-        _cards.Sort((a, b)=> 1 - 2 * Random.Range(0, 1));
-        playerOne.Add(_cards[0]);
-        _cards.RemoveAt(0);
-        playerOne.Add(_cards[0]);
-        _cards.RemoveAt(0);
-        playerOne.Add(_cards[0]);
-        _cards.RemoveAt(0);
-        playerTwo.Add(_cards[0]);
-        _cards.RemoveAt(0);
-        playerTwo.Add(_cards[0]);
-        _cards.RemoveAt(0);
-        playerTwo.Add(_cards[0]);
-        _cards.RemoveAt(0);
-        playerThree.Add(_cards[0]);
-        _cards.RemoveAt(0);
-        playerThree.Add(_cards[0]);
-        _cards.RemoveAt(0);
-        playerThree.Add(_cards[0]);
-        _cards.RemoveAt(0);
-        playerFour.Add(_cards[0]);
-        _cards.RemoveAt(0);
-        playerFour.Add(_cards[0]);
-        _cards.RemoveAt(0);
-        playerFour.Add(_cards[0]);
-        _cards.RemoveAt(0);
-        table.Add(_cards[0]);
-        _cards.RemoveAt(0);
-        table.Add(_cards[0]);
-        _cards.RemoveAt(0);
-        table.Add(_cards[0]);
-        _cards.RemoveAt(0);
-        
-        
-        
     }
 
     private void Start()
     {
-        UpdateCardVisuals();
+        foreach (CardVisual card in deck)
+        {
+            card.SetPosition(transform.position);
+            card.Hide();
+        }
+        foreach (Dog dog in dogs)
+        {
+            dog.GiveCards(Draw(),Draw(),Draw());
+        }
+        table.GiveCards(Draw(),Draw(),Draw());
+        hoof.GiveCards(Draw(),Draw(),Draw());
+        MoveCards?.Invoke();
     }
-
+    
+    public CardVisual Draw()
+    {
+        CardVisual drawnCard = deck[0];
+        deck.RemoveAt(0);
+        return drawnCard;
+    }
     public void SwapAll()
     {
         if (currentTurn !=0 || gameEnded)
         {
             return;
         }
-        (playerOne[0], table[0]) = (table[0], playerOne[0]);
-        (playerOne[1], table[1]) = (table[1], playerOne[1]);
-        (playerOne[2], table[2]) = (table[2], playerOne[2]);
-        currentPlayerSelectedCard = 0;
-        currentTableSelectedCard = 0;
-        currentTurn = 1;
-        UpdateCardVisuals();
+        print("Swapping All");
+        
+        table.SwapCard(1,hoof.GetHolder(1));
+        table.SwapCard(2,hoof.GetHolder(2));
+        table.SwapCard(3,hoof.GetHolder(3));
+        
+        EndTurn();
     }
 
     public void Skip()
@@ -110,9 +75,8 @@ public class SwimmerManager : MonoBehaviour
         {
             return;
         }
-
-        currentTurn = 1;
-        UpdateCardVisuals();
+        print("Skipping");
+        EndTurn();
     }
     public void Knock()
     {
@@ -120,10 +84,9 @@ public class SwimmerManager : MonoBehaviour
         {
             return;
         }
-
+        print("Knocking");
         lastRound = true;
-        currentTurn = 1;
-        UpdateCardVisuals();
+        EndTurn();
     }
     public void Swap()
     {
@@ -131,36 +94,25 @@ public class SwimmerManager : MonoBehaviour
         {
             return;
         }
-        if (currentPlayerSelectedCard==0 || currentTableSelectedCard==0)
+        if (HasSelectedTwoCards())
         {
             return;
         }
-        (playerOne[currentPlayerSelectedCard - 1], table[currentTableSelectedCard-1]) = (table[currentTableSelectedCard-1], playerOne[currentPlayerSelectedCard - 1]);
+        print("Swapping");
+        table.SwapCard(currentTableSelectedCard,hoof.GetHolder(currentPlayerSelectedCard));
+        EndTurn();
+    }
+
+    private void EndTurn()
+    {
         currentPlayerSelectedCard = 0;
         currentTableSelectedCard = 0;
         currentTurn = 1;
-        UpdateCardVisuals();
+        UpdateHolders?.Invoke();
+        MoveCards?.Invoke();
     }
 
-    public void UpdateCardVisuals()
-    {
-        for (var index = 0; index < playerCards.Count; index++)
-        {
-            playerCards[index].UpdateCard(playerOne[index],currentPlayerSelectedCard);
-        }
-        for (var index = 0; index < tableCards.Count; index++)
-        {
-            tableCards[index].UpdateCard(table[index],currentTableSelectedCard);
-        }
-
-        scoreText.text = "Score: " + CalculateScore(playerOne[0],playerOne[1],playerOne[2]);
-    }
-    public Card GetPlayerCard(int cardNumber)
-    {
-        return playerOne[cardNumber - 1];
-    }
-
-    public float CalculateScore(Card c1,Card c2, Card c3)
+    public float CalculateScore(CardVisual c1,CardVisual c2, CardVisual c3)
     {
         if (c1.face==c2.face&&c1.face==c3.face)
         {
@@ -204,32 +156,23 @@ public class SwimmerManager : MonoBehaviour
         {
             case Face.Seven:
                 return 7;
-                break;
             case Face.Eight:
                 return 8;
-                break;
             case Face.Nine:
                 return 9;
-                break;
             case Face.Ten:
                 return 10;
-                break;
             case Face.Jack:
                 return 10;
-                break;
             case Face.Queen:
-                return 10;
-                break;
+                return 10; 
             case Face.King:
                 return 10;
-                break;
             case Face.Ace:
                 return 11;
-                break;
             default:
-                throw new ArgumentOutOfRangeException(nameof(face), face, null);
+                return 7;
         }
-        return 7;
     }
 
     private void Update()
@@ -243,57 +186,63 @@ public class SwimmerManager : MonoBehaviour
                 switch (currentTurn)
                 {
                     case 1:
-                        (playerTwo[0], table[0]) = (table[0], playerTwo[0]);
+                        dogs[0].MakeMove(table);
                         currentTurn = 2;
-                        UpdateCardVisuals();
+                        UpdateHolders?.Invoke();
+                        MoveCards?.Invoke();
                         break;
                     case 2:
-                        (playerTwo[1], table[1]) = (table[1], playerTwo[1]);
                         currentTurn = 3;
-                        UpdateCardVisuals();
+                        UpdateHolders?.Invoke();
+                        MoveCards?.Invoke();
                         break;
                     case 3:
-                        (playerTwo[2], table[2]) = (table[2], playerTwo[2]);
                         currentTurn = 0;
+                        UpdateHolders?.Invoke();
+                        MoveCards?.Invoke();
                         firstRound = false;
-                        UpdateCardVisuals();
                         if (lastRound)
                         {
-                            DisplayScores();
+                            EndRound();
                         }
                         break;
                     default:
                         break;
                 }
             }
-           
         }
     }
 
-    private void DisplayScores()
+    private void EndRound()
     {
-        p2Text.text = "Score: " + CalculateScore(playerTwo[0],playerTwo[1],playerTwo[2]);
-        
-        p3Text.text = "Score: " + CalculateScore(playerThree[0],playerThree[1],playerThree[2]);
-        
-        p4Text.text = "Score: " + CalculateScore(playerFour[0],playerFour[1],playerFour[2]);
         gameEnded = true;
         currentTurn = 0;
-    }
-}
-[Serializable]
-public class Card
-{
-    public Suit suit;
-    public Face face;
+        foreach (Dog dog in dogs)
+        {
+            dog.ShowCards();
+        }
 
-    public Card(Suit suit, Face face)
+        playerScore.text = "Score: " + CalculateScore(hoof.GetCard(1),hoof.GetCard(2),hoof.GetCard(3));
+    }
+
+    public void SelectCard(bool isHoof,int cardId)
     {
-        this.suit = suit;
-        this.face = face;
+        if (isHoof)
+        {
+            currentPlayerSelectedCard = cardId;
+        }
+        else
+        {
+            currentTableSelectedCard = cardId;
+        }
+        UpdateHolders?.Invoke();
+    }
+
+    public bool HasSelectedTwoCards()
+    {
+        return currentPlayerSelectedCard == 0 || currentTableSelectedCard == 0;
     }
 }
-
 public enum Suit
 {
     Spades,Hearts,Clubs,Diamonds
