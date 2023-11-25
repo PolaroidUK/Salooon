@@ -160,7 +160,7 @@ MonoBehaviour:
     dialogueBox: {fileID: 281978491}
   - name: Segment
     barPatron: {fileID: 2001463500}
-    drink: {fileID: 1314162919}
+    drink: {fileID: 0}
     textBox: {fileID: 1176306172}
     dialogueBox: {fileID: 1278813290}
   - name: Segment
@@ -3163,7 +3163,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1417267779
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3635,7 +3635,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1693961676
 RectTransform:
   m_ObjectHideFlags: 0
