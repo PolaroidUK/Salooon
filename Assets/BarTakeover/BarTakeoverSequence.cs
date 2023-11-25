@@ -78,8 +78,11 @@ public class BarTakeoverSequence : MonoBehaviour
     {
         foreach (GameObject go in sequenceSegments[index].GetGOs())
         {
-            Debug.Log("Set gameObject " + go.name + " to active state: " + activeState);
-            go.SetActive(activeState);
+            if (go != null)
+            {
+                Debug.Log("Set gameObject " + go.name + " to active state: " + activeState);
+                go.SetActive(activeState);
+            }
         }
     }
 }
