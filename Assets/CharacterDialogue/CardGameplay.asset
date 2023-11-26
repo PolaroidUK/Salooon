@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e222a2099496fd4295da7dec2e7d52f, type: 3}
+  m_Name: CardGameplay
+  m_EditorClassIdentifier: 
+  dialogue:
+  - character: {fileID: 11400000, guid: 85692b429967d724db13e7354c0e7b95, type: 2}
+    text: "Drawing Cards: At the start, everyone gets three cards. You can either
+      keep the cards you're dealt or exchange 'em for new ones from the deck. It's
+      a bit like wranglin' a herd of cattle \u2013 sometimes you gotta make swaps
+      to round up the best hand."
+  - character: {fileID: 11400000, guid: 85692b429967d724db13e7354c0e7b95, type: 2}
+    text: 'The Discard Pile: Keep an eye on the discard pile, Sheriff. That''s where
+      you fish for cards. Draw from there, and be sly like a fox'
+  - character: {fileID: 11400000, guid: 85692b429967d724db13e7354c0e7b95, type: 2}
+    text: 'Knocking: When you reckon your hand''s as good as it gets, you can knock
+      on the table. Then, everyone gets one last turn to improve their hand. It''s
+      a showdown, like two gunslingers squarin'' off at high noon.'
+  options:
+  - answer: Objective
+    nextDialogue: {fileID: 11400000, guid: bc4b3d5ab45a3444cb438829f6ee9318, type: 2}
+  - answer: Card Values
+    nextDialogue: {fileID: 11400000, guid: 2537b5cfe7d65f94c9e59e2ad28b0fae, type: 2}
+  - answer: Gameplay
+    nextDialogue: {fileID: 11400000}
+  - answer: Scoring
+    nextDialogue: {fileID: 11400000, guid: e727ecb10f507e34780e2a36a99fb71b, type: 2}
+  - answer: Game On, Sheriff
+    nextDialogue: {fileID: 11400000, guid: 5da2b051bed837f48adb6fe5e2d0d498, type: 2}
+  playGame: 0

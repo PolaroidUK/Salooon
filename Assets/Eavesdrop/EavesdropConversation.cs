@@ -114,10 +114,10 @@ public class EavesdropConversation : MonoBehaviour
     public void SetConversationImages()
     {
         persone1Talking.SetActive(currentState == ConversationState.talking);
-        persone2Talking.SetActive(currentState == ConversationState.talking);
+        //persone2Talking.SetActive(currentState == ConversationState.talking);
         persone1Sussing.SetActive(currentState == ConversationState.sussing);
-        persone2Sussing.SetActive(currentState == ConversationState.sussing);
+        //persone2Sussing.SetActive(currentState == ConversationState.sussing);
         persone1Checking.SetActive(currentState == ConversationState.checking);
-        persone2Checking.SetActive(currentState == ConversationState.checking);
+        //persone2Checking.SetActive(currentState == ConversationState.checking);
     }
 }

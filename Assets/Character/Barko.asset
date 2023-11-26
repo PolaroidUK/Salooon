@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 84871030ab38de1418ba41b44b08270b, type: 3}
-  m_Name: John
+  m_Name: Barko
   m_EditorClassIdentifier: 
-  name: John
-  characterSprite: {fileID: 21300000, guid: f377ea2797a559542b24601876f99b0e, type: 3}
+  name: Barko
+  characterSprite: {fileID: 21300000, guid: 1326c446b38d2d441b72c0698d0d99f4, type: 3}

@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e222a2099496fd4295da7dec2e7d52f, type: 3}
+  m_Name: CardScoring
+  m_EditorClassIdentifier: 
+  dialogue:
+  - character: {fileID: 11400000, guid: 85692b429967d724db13e7354c0e7b95, type: 2}
+    text: "Thirty-One: If you hit 31 exactly, you holler 'Thirty-One!' and win the
+      round. It's like findin' gold in the river \u2013 rare and oh-so-satisfyin'."
+  - character: {fileID: 11400000, guid: 85692b429967d724db13e7354c0e7b95, type: 2}
+    text: "Aces: \"Aces are like the sun settin' on the horizon \u2013 either 1 point
+      or 11. You choose wisely, partner.\""
+  options:
+  - answer: Objective
+    nextDialogue: {fileID: 11400000, guid: bc4b3d5ab45a3444cb438829f6ee9318, type: 2}
+  - answer: Card Values
+    nextDialogue: {fileID: 11400000}
+  - answer: Gameplay
+    nextDialogue: {fileID: 11400000, guid: 78547e9896eb77043bfe16cb5b86cee8, type: 2}
+  - answer: Scoring
+    nextDialogue: {fileID: 11400000}
+  - answer: Game On, Sheriff
+    nextDialogue: {fileID: 11400000, guid: 5da2b051bed837f48adb6fe5e2d0d498, type: 2}
+  playGame: 0

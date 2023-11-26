@@ -30,8 +30,8 @@ public class Table : MonoBehaviour
 
     public void DiscardCards(GameObject discardPile)
     {
-        holders[0].DiscardCard(transform.position);
-        holders[1].DiscardCard(transform.position);
-        holders[2].DiscardCard(transform.position);
+        holders[0].DiscardCard(discardPile.transform.position);
+        holders[1].DiscardCard(discardPile.transform.position);
+        holders[2].DiscardCard(discardPile.transform.position);
     }
 }

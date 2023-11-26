@@ -12,6 +12,7 @@ public class Dog : MonoBehaviour
     [SerializeField] private int dogID = 1;
     [SerializeField] private bool outOfGame;
     [SerializeField] private GameObject skipText,knockText;
+    [SerializeField] public bool skipped;
     
     public void GiveCards(Card c1, Card c2, Card c3)
     {
@@ -30,26 +31,29 @@ public class Dog : MonoBehaviour
         return paw[i];
     }
 
-    public int MakeMove(Table table)
+    public int MakeMove(Table table,bool isLastRound)
     {
-        int move = FindMove(table);
+        int move = FindMove(table, isLastRound);
         switch (move)
         {
             case 0:
                 skipText.SetActive(true);
+                skipped = true;
                 break;
             case 1:
                 skipText.SetActive(false);
+                skipped = false;
                 break;
             case 2:
                 skipText.SetActive(false);
                 knockText.SetActive(true);
+                skipped = false;
                 break;
         }
         return move;
     }
 
-    private int FindMove(Table table)
+    private int FindMove(Table table,bool isLastRound)
     {
         Vector2 bestMove;
         float bestScore;
@@ -67,7 +71,7 @@ public class Dog : MonoBehaviour
 
                 bestMove = Vector2.left;
                 bestScore = SwimmerManager.CalculateScore(paw[0], paw[1], paw[2]);
-                if (bestScore > 29)
+                if (bestScore > 29&& !isLastRound)
                 {
                     return 2;
                 }
@@ -109,7 +113,7 @@ public class Dog : MonoBehaviour
             case 3:
                 bestMove = Vector2.left;
                 bestScore = SwimmerManager.CalculateScore(paw[0], paw[1], paw[2]);
-                if (bestScore > 27)
+                if (bestScore > 27&& !isLastRound)
                 {
                     return 2;
                 }

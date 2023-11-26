@@ -8,6 +8,8 @@ public class CharacterDialogue : ScriptableObject
     public Dialogue[] dialogue;
     public DialogueOption[] options;
 
+    public bool playGame = false;
+
 }
 
 [System.Serializable]

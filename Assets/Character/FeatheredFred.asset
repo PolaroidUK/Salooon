@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84871030ab38de1418ba41b44b08270b, type: 3}
+  m_Name: FeatheredFred
+  m_EditorClassIdentifier: 
+  name: 'Feathered Fred '
+  characterSprite: {fileID: 21300000, guid: c24e66283052e8d4f9d1781000442ec4, type: 3}

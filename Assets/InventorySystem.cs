@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class InventorySystem : MonoBehaviour
 {
+    public Inventory inventory;
     bool inventoryOpen = false;
     public Dictionary<Item, GameObject> items = new Dictionary<Item, GameObject>();
     public GameObject openedInventory;
@@ -22,6 +23,11 @@ public class InventorySystem : MonoBehaviour
     private void Start()
     {
         CloseInventory();
+
+        foreach(Item item in inventory.items)
+        {
+            AddItem(item, false);
+        }
     }
 
     public void ItemClicked(GameObject itemObj)
@@ -62,14 +68,19 @@ public class InventorySystem : MonoBehaviour
     public void RemoveItem(Item item)
     {
         Destroy(items[item]);
+        inventory.items.Remove(selectedItem);
+
         items.Remove(item);
     }
 
-    public void AddItem(Item item)
+    public void AddItem(Item item, bool addToScriptableObject = true )
     {
         GameObject itemObj = Instantiate(itemIconPrefab, itemGroup.transform);
         itemObj.GetComponent<ItemInteractable>().item = item;
+        if (addToScriptableObject)
+            inventory.items.Add(selectedItem);
         itemObj.GetComponent<Button>().onClick.AddListener(() => ItemClicked(itemObj));
+        print(item.name);
         items.Add(item, itemObj);
     }
 

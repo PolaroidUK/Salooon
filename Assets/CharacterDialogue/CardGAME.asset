@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6e222a2099496fd4295da7dec2e7d52f, type: 3}
-  m_Name: JohnLove
+  m_Name: CardGAME
   m_EditorClassIdentifier: 
   dialogue:
-  - character: {fileID: 11400000, guid: 046317d31717fbf43a58519df694915f, type: 2}
-    text: 'No, John you are so nice : )'
-  - character: {fileID: 11400000, guid: 046317d31717fbf43a58519df694915f, type: 2}
-    text: '*kisses john on lips*'
-  option: []
+  - character: {fileID: 11400000, guid: 85692b429967d724db13e7354c0e7b95, type: 2}
+    text: So, ready to ride into the world of Thirty-One? It's a card game where
+      luck and skill dance like tumbleweeds in the breeze. Saddle up, and let's see
+      if you've got the cards to beat the pack
+  options: []
+  playGame: 1

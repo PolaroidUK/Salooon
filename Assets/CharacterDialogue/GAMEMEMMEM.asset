@@ -10,11 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6e222a2099496fd4295da7dec2e7d52f, type: 3}
-  m_Name: JohnHate
+  m_Name: GAMEMEMMEM
   m_EditorClassIdentifier: 
-  dialogue:
-  - character: {fileID: 11400000, guid: 046317d31717fbf43a58519df694915f, type: 2}
-    text: Yes I hate you John.
-  - character: {fileID: 11400000, guid: 046317d31717fbf43a58519df694915f, type: 2}
-    text: You really do suck.
-  option: []
+  dialogue: []
+  options: []
+  playGame: 1
