@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -91,7 +92,9 @@ public class DialogueManager : MonoBehaviour
         if (curDialogue.dialogue.Length <= dialogueIndex)
         {
             if (curDialogue.playGame)
-                FindObjectOfType<MinigameEntry>().LoadScene();
+            {
+                SceneManager.LoadScene(curDialogue.gameID);
+            }
 
             showingDialogue = false;
             dialogueUI.SetActive(false);

@@ -19,3 +19,4 @@ MonoBehaviour:
       if you've got the cards to beat the pack
   options: []
   playGame: 1
+  gameID: 2

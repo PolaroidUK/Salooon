@@ -9,6 +9,7 @@ public class CharacterDialogue : ScriptableObject
     public DialogueOption[] options;
 
     public bool playGame = false;
+    public int gameID = 0;
 
 }
 
