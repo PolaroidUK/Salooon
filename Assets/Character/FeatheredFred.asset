@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: FeatheredFred
   m_EditorClassIdentifier: 
   name: 'Feathered Fred '
-  characterSprite: {fileID: 21300000, guid: f377ea2797a559542b24601876f99b0e, type: 3}
+  characterSprite: {fileID: 21300000, guid: c24e66283052e8d4f9d1781000442ec4, type: 3}
