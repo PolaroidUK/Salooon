@@ -154,7 +154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77fc24e11864bbe4b80abcae013f088f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneIdForMinigame: 1
+  sceneIdForMinigame: 2
 --- !u!61 &283733728
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -227,8 +227,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 506a11ada898ad04da031732d2189935, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverText: 
-  dialogueWhenClicked: {fileID: 0}
+  hoverText: Make Drinks
+  dialogueWhenClicked: {fileID: 11400000, guid: 69b257dbba5d56548a97113cce7c06d0, type: 2}
   itemThatTriggers: {fileID: 0}
 --- !u!1 &312869308
 GameObject:
@@ -437,7 +437,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77fc24e11864bbe4b80abcae013f088f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneIdForMinigame: 1
+  sceneIdForMinigame: 3
 --- !u!61 &516079166
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -510,8 +510,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 506a11ada898ad04da031732d2189935, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverText: 
-  dialogueWhenClicked: {fileID: 0}
+  hoverText: Eavesdrop
+  dialogueWhenClicked: {fileID: 11400000, guid: 69b257dbba5d56548a97113cce7c06d0, type: 2}
   itemThatTriggers: {fileID: 0}
 --- !u!1 &610101245
 GameObject:
