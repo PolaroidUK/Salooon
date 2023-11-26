@@ -26,7 +26,8 @@ public class Card : MonoBehaviour
 
     private void MoveCard()
     {
-        transform.position = position;
+        previousPosition = transform.position;
+        StartCoroutine(SlideCard());
     }
 
 
@@ -49,5 +50,16 @@ public class Card : MonoBehaviour
     public void Show()
     {
         hidden = false;
+    }
+    
+    IEnumerator SlideCard()
+    {
+        for (int i = 0; i < 1; i++)
+        {
+            transform.position = Vector3.Lerp(previousPosition,position,i);
+            yield return new WaitForSeconds(.1f);
+        }
+
+        transform.position = position;
     }
 }

@@ -11,6 +11,7 @@ public class Dog : MonoBehaviour
     [SerializeField] private GameObject[] liveSprites;
     [SerializeField] private int dogID = 1;
     [SerializeField] private bool outOfGame;
+    [SerializeField] private GameObject skipText,knockText;
     
     public void GiveCards(Card c1, Card c2, Card c3)
     {
@@ -31,94 +32,124 @@ public class Dog : MonoBehaviour
 
     public int MakeMove(Table table)
     {
+        int move = FindMove(table);
+        switch (move)
+        {
+            case 0:
+                skipText.SetActive(true);
+                break;
+            case 1:
+                skipText.SetActive(false);
+                break;
+            case 2:
+                skipText.SetActive(false);
+                knockText.SetActive(true);
+                break;
+        }
+        return move;
+    }
+
+    private int FindMove(Table table)
+    {
         Vector2 bestMove;
         float bestScore;
         switch (dogID)
         {
             case 1:
-                if (Random.value>0.5f)
+                if (Random.value > 0.5f)
                 {
-                    SwapCards(Random.Range(0,3),Random.Range(0,3),table);
+                    SwapCards(Random.Range(0, 3), Random.Range(0, 3), table);
                     return 1;
                 }
 
                 return 0;
             case 2:
-                
+
                 bestMove = Vector2.left;
-                bestScore = SwimmerManager.CalculateScore(paw[0],paw[1],paw[2]);
-                if (bestScore>29)
+                bestScore = SwimmerManager.CalculateScore(paw[0], paw[1], paw[2]);
+                if (bestScore > 29)
                 {
                     return 2;
                 }
+
                 for (int i = 0; i < 2; i++)
                 {
-                    if (bestScore<SwimmerManager.CalculateScore(paw[0],paw[1],table.GetCard(i)))
+                    if (bestScore < SwimmerManager.CalculateScore(paw[0], paw[1], table.GetCard(i)))
                     {
                         bestMove = new Vector2(2, i);
                         bestScore = SwimmerManager.CalculateScore(paw[0], paw[1], table.GetCard(i));
                     }
                 }
+
                 for (int i = 0; i < 2; i++)
                 {
-                    if (bestScore<SwimmerManager.CalculateScore(paw[0],paw[2],table.GetCard(i)))
+                    if (bestScore < SwimmerManager.CalculateScore(paw[0], paw[2], table.GetCard(i)))
                     {
                         bestMove = new Vector2(1, i);
                         bestScore = SwimmerManager.CalculateScore(paw[0], paw[2], table.GetCard(i));
                     }
                 }
+
                 for (int i = 0; i < 2; i++)
                 {
-                    if (bestScore<SwimmerManager.CalculateScore(paw[2],paw[1],table.GetCard(i)))
+                    if (bestScore < SwimmerManager.CalculateScore(paw[2], paw[1], table.GetCard(i)))
                     {
                         bestMove = new Vector2(0, i);
                         bestScore = SwimmerManager.CalculateScore(paw[2], paw[1], table.GetCard(i));
                     }
                 }
+
                 if (bestMove != Vector2.left)
                 {
-                    SwapCards((int)bestMove.x,(int)bestMove.y,table);
+                    SwapCards((int)bestMove.x, (int)bestMove.y, table);
                     return 1;
                 }
+
                 return 0;
             case 3:
                 bestMove = Vector2.left;
-                bestScore = SwimmerManager.CalculateScore(paw[0],paw[1],paw[2]);
-                if (bestScore>27)
+                bestScore = SwimmerManager.CalculateScore(paw[0], paw[1], paw[2]);
+                if (bestScore > 27)
                 {
                     return 2;
                 }
+
                 for (int i = 0; i < 2; i++)
                 {
-                    if (bestScore<SwimmerManager.CalculateScore(paw[0],paw[1],table.GetCard(i)))
+                    if (bestScore < SwimmerManager.CalculateScore(paw[0], paw[1], table.GetCard(i)))
                     {
                         bestMove = new Vector2(2, i);
                         bestScore = SwimmerManager.CalculateScore(paw[0], paw[1], table.GetCard(i));
                     }
                 }
+
                 for (int i = 0; i < 2; i++)
                 {
-                    if (bestScore<SwimmerManager.CalculateScore(paw[0],paw[2],table.GetCard(i)))
+                    if (bestScore < SwimmerManager.CalculateScore(paw[0], paw[2], table.GetCard(i)))
                     {
                         bestMove = new Vector2(1, i);
                         bestScore = SwimmerManager.CalculateScore(paw[0], paw[2], table.GetCard(i));
                     }
                 }
+
                 for (int i = 0; i < 2; i++)
                 {
-                    if (bestScore<SwimmerManager.CalculateScore(paw[2],paw[1],table.GetCard(i)))
+                    if (bestScore < SwimmerManager.CalculateScore(paw[2], paw[1], table.GetCard(i)))
                     {
                         bestMove = new Vector2(0, i);
                         bestScore = SwimmerManager.CalculateScore(paw[2], paw[1], table.GetCard(i));
                     }
                 }
+
                 if (bestMove != Vector2.left)
                 {
-                    SwapCards((int)bestMove.x,(int)bestMove.y,table);
+                    SwapCards((int)bestMove.x, (int)bestMove.y, table);
                     return 1;
                 }
+
                 return 0;
         }
+
         return 0;
     }
 

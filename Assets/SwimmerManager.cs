@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public class SwimmerManager : MonoBehaviour
@@ -26,8 +27,10 @@ public class SwimmerManager : MonoBehaviour
     [SerializeField] private int lastSkipId;
     [SerializeField] private int knocker;
     [SerializeField] private GameObject discardPile;
+    [SerializeField] private bool wonSchwimmerless;
+    [SerializeField] private PlayerStats stats;
     
-    
+
     public event Action MoveCards;
     public event Action UpdateHolders;
 
@@ -347,6 +350,12 @@ public class SwimmerManager : MonoBehaviour
         else
         {
             dogs[lowestI - 1].TakeLife();
+        }
+
+        if (dogs[0].IsOutOfGame() && dogs[1].IsOutOfGame() && dogs[2].IsOutOfGame() )
+        {
+            stats.hasWonSchwimmerless = true;
+            SceneManager.LoadScene("Saloon");
         }
     }
 
