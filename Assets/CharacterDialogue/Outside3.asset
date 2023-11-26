@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e222a2099496fd4295da7dec2e7d52f, type: 3}
+  m_Name: Outside3
+  m_EditorClassIdentifier: 
+  dialogue:
+  - character: {fileID: 11400000, guid: 51fdf0966a239eb4ab5992a95d7ad7d3, type: 2}
+    text: Sheriff, listen up! The grapevine is buzzin' louder than a rattlesnake.
+      You want to know about that poker game? Start by eavesdropping on the gossip
+      around here. Head to the bar, mix up a few drinks, and watch those secrets
+      pour out. And keep an eye out for that chatty chicken! Oh, and word is, the
+      rabbit bartender is allergic to carrots, so tread lightly, partner!
+  - character: {fileID: 11400000, guid: 046317d31717fbf43a58519df694915f, type: 2}
+    text: Well, reckon a quick ride to the Saloon won't hurt. A sheriff's duty, after
+      all. And who knows, maybe Fred's right. A bit of spicy gossip might make my
+      departure legendary!
+  options: []

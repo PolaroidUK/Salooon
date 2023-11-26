@@ -68,7 +68,7 @@ public class DialogueManager : MonoBehaviour
         {
             choiceUI.SetActive(true);
             optionsGroup.SetActive(true);
-            for (int i = 0; i < options.Length + 1; i++)
+            for (int i = 0; i < options.Length; i++)
             {
                 GameObject optionBtn = Instantiate(optionBtnPrefab, optionsGroup.transform);
                 TMP_Text optionText = optionBtn.GetComponentInChildren<TMP_Text>();

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e222a2099496fd4295da7dec2e7d52f, type: 3}
+  m_Name: Outside1
+  m_EditorClassIdentifier: 
+  dialogue:
+  - character: {fileID: 11400000, guid: 046317d31717fbf43a58519df694915f, type: 2}
+    text: This town's been my stompin' ground for years. Maybe it's time for ol'
+      Jerry to hang up the horseshoes and mosey on to some R&R. Yeah, a bit of chillin'
+      in life sounds mighty fine.
+  - character: {fileID: 11400000, guid: 51fdf0966a239eb4ab5992a95d7ad7d3, type: 2}
+    text: Sheriff, wait just a squawk! This town's gossip mill is dryer than a desert
+      creek in July. We need more juicy tales! I've got a mission for you.
+  options:
+  - answer: eeh..
+    nextDialogue: {fileID: 11400000, guid: 92f2176a190958649a1b1769acd2ed5a, type: 2}
+  - answer: Gossip, Fred? I'm headin' out for some peace and quiet. Can't this wait?
+    nextDialogue: {fileID: 11400000, guid: 92f2176a190958649a1b1769acd2ed5a, type: 2}
