@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EavesdropGameManager : MonoBehaviour
 {
@@ -49,12 +50,13 @@ public class EavesdropGameManager : MonoBehaviour
     public void WinGame()
     {
         gameIsOn = false;
-        Debug.Log("WOOHOO");
+        SceneManager.LoadScene(1);
+
     }
 
     public void FailGame()
     {
         gameIsOn = false;
-        Debug.Log("Who's that creep eavesdropping on us?!?");
+        SceneManager.LoadScene(1);
     }
 }
