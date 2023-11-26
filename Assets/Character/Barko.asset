@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Barko
   m_EditorClassIdentifier: 
   name: Barko
-  characterSprite: {fileID: -1835380179, guid: e9be5073ad5af7c4390fa5744f4f1281, type: 3}
+  characterSprite: {fileID: 21300000, guid: 1326c446b38d2d441b72c0698d0d99f4, type: 3}
