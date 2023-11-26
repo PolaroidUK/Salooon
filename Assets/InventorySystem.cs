@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InventorySystem : MonoBehaviour
 {
@@ -15,7 +16,8 @@ public class InventorySystem : MonoBehaviour
     Item selectedItem;
     GameObject selectedItemObj;
 
-    bool 
+    bool select;
+    public Item item;
 
     private void Start()
     {
@@ -30,6 +32,7 @@ public class InventorySystem : MonoBehaviour
         selectedItemObj = itemObj;
         selectedItem = itemObj.GetComponent<ItemInteractable>().item;
         selectedItemObj.transform.GetChild(0).gameObject.SetActive(true);
+        select = true;
     }
 
     public Item GetSelectedItem()
@@ -39,12 +42,21 @@ public class InventorySystem : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonUp(0))
         {
-            if (selectedItemObj)
-                selectedItemObj.transform.GetChild(0).gameObject.SetActive(false);
-            selectedItemObj = null;
+            if (!select)
+                StartCoroutine(DeselectNextFrame());
+            select = false;
         }
+    }
+
+    IEnumerator DeselectNextFrame()
+    {
+        yield return new WaitForEndOfFrame();
+        if (selectedItemObj)
+            selectedItemObj.transform.GetChild(0).gameObject.SetActive(false);
+        selectedItemObj = null;
+        selectedItem = null;
     }
 
     public void RemoveItem(Item item)
@@ -57,6 +69,7 @@ public class InventorySystem : MonoBehaviour
     {
         GameObject itemObj = Instantiate(itemIconPrefab, itemGroup.transform);
         itemObj.GetComponent<ItemInteractable>().item = item;
+        itemObj.GetComponent<Button>().onClick.AddListener(() => ItemClicked(itemObj));
         items.Add(item, itemObj);
     }
 
