@@ -17,6 +17,7 @@ public class DialogueManager : MonoBehaviour
 
     public GameObject optionsGroup;
     public GameObject optionBtnPrefab;
+    public GameObject choiceUI;
 
     bool showingOptions = false;
     public string backBtnText = "Back";
@@ -27,6 +28,7 @@ public class DialogueManager : MonoBehaviour
     {
         dialogueUI.SetActive(false);
         optionBtnPrefab.SetActive(false);
+        choiceUI.SetActive(false);
     }
 
     public void StartDialogue(CharacterDialogue characterDialogue)
@@ -44,6 +46,7 @@ public class DialogueManager : MonoBehaviour
     public void OptionBtnClick(int index)
     {
         optionsGroup.SetActive(false);
+        choiceUI.SetActive(false);
         foreach (GameObject option in addedOptionBtns)
             Destroy(option);
 
@@ -63,6 +66,7 @@ public class DialogueManager : MonoBehaviour
         DialogueOption[] options = curDialogue.options;
         if (options.Length > 0)
         {
+            choiceUI.SetActive(true);
             optionsGroup.SetActive(true);
             for (int i = 0; i < options.Length + 1; i++)
             {
