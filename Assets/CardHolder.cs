@@ -11,8 +11,8 @@ public class CardHolder : MonoBehaviour
     public int cardHolderID;
     [SerializeField] private bool isHoof;
     
-    [SerializeField] private CardVisual currentCard;
-    public SpriteRenderer spriteRenderer;
+    private Card currentCard;
+    private SpriteRenderer spriteRenderer;
 
     private void Start()
     {
@@ -39,15 +39,20 @@ public class CardHolder : MonoBehaviour
         }
     }
 
-    public void SetCard(CardVisual c1)
+    public void SetCard(Card c1)
     {
         currentCard = c1;
         currentCard.SetPosition(transform.position);
         currentCard.Show();
     }
 
-    public CardVisual GetCard()
+    public Card GetCard()
     {
         return currentCard;
+    }
+
+    public void DiscardCard(Vector3 discardPile)
+    {
+        currentCard.SetPosition(discardPile);
     }
 }
