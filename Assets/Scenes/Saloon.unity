@@ -228,7 +228,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hoverText: Make Drinks
-  dialogueWhenClicked: {fileID: 11400000, guid: 69b257dbba5d56548a97113cce7c06d0, type: 2}
+  dialogueWhenClicked: {fileID: 11400000, guid: 91dc3cbe64f880b4086f1e3b82126796, type: 2}
   itemThatTriggers: {fileID: 0}
 --- !u!1 &312869308
 GameObject:
