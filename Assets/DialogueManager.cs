@@ -90,6 +90,9 @@ public class DialogueManager : MonoBehaviour
     {
         if (curDialogue.dialogue.Length <= dialogueIndex)
         {
+            if (curDialogue.playGame)
+                FindObjectOfType<MinigameEntry>().LoadScene();
+
             showingDialogue = false;
             dialogueUI.SetActive(false);
             ShowOptions();
