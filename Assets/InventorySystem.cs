@@ -16,12 +16,9 @@ public class InventorySystem : MonoBehaviour
     Item selectedItem;
     GameObject selectedItemObj;
 
-<<<<<<< Updated upstream
     bool select;
     public Item item;
 
-=======
->>>>>>> Stashed changes
     private void Start()
     {
         CloseInventory();

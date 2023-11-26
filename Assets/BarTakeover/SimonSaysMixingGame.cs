@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class SimonSaysMixingGame : MonoBehaviour
 {
-    public PatronWaddle currentPatron;
+    public int currentPatronIndex;
     public List<PatronWaddle> patrons;
 
     [Serializable]
@@ -25,20 +25,23 @@ public class SimonSaysMixingGame : MonoBehaviour
     public DrinkIngredients selectedIngredient;
     public List<DrinkIngredients> mixedIngredients;
 
-    public GameObject dialogueButton;
+    public GameObject drinkIngredientSelections;
 
     void Start()
     {
-        currentPatron = patrons[0];
-        currentPatron.gameObject.SetActive(true);
-        currentPatron.WalkIntoView();
+        currentPatronIndex = 0;
+        CallNextPatron();
+    }
 
+    public void CallNextPatron()
+    {
+        patrons[currentPatronIndex].WalkIntoView();
         AwaitPatronOrder();
     }
 
     public async void AwaitPatronOrder()
     {
-        while(currentPatron.isWaddling)
+        while(patrons[currentPatronIndex].isWaddling)
         {
             await Task.Delay(1);
         }
@@ -48,12 +51,12 @@ public class SimonSaysMixingGame : MonoBehaviour
 
     public void PrepareSimonSaysGame()
     {
-
+        drinkIngredientSelections.SetActive(true);
     }
 
     public void SelectIngredient(DrinkIngredients ingredientType)
     {
-        if (selectedIngredient != selectedIngredient)
+        if (ingredientType != selectedIngredient)
         {
             selectedIngredient = ingredientType;
         }
@@ -70,12 +73,45 @@ public class SimonSaysMixingGame : MonoBehaviour
         {
             mixedIngredients.Add(selectedIngredient);
 
-            CheckCompletedDrink();
+            if (mixedIngredients.Count == patrons[currentPatronIndex].myOrder.Count)
+            {
+                CheckCompletedDrink();
+            }
         }
+        selectedIngredient = DrinkIngredients.none;
     }
 
     public void CheckCompletedDrink()
     {
-        currentPatron.RequestCompleted(mixedIngredients);
+        drinkIngredientSelections.SetActive(false);
+        patrons[currentPatronIndex].RequestCompleted(mixedIngredients);
+
+        mixedIngredients.Clear();
+        selectedIngredient = DrinkIngredients.none;
+        WaitForNextPatron();
+    }
+
+    public async void WaitForNextPatron()
+    {
+        while(patrons[currentPatronIndex].isWaddling)
+        {
+            await Task.Delay(1);
+        }
+
+        currentPatronIndex++;
+        if (currentPatronIndex < patrons.Count)
+        {
+            CallNextPatron();
+        }
+        else
+        {
+            EndGame();
+        }
+    }
+
+    public void EndGame()
+    {
+        Debug.Log("Crikey! The real Bartender finished his shitey!");
+        Debug.Log("Time to skip!");
     }
 }

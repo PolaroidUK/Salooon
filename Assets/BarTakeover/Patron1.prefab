@@ -258,7 +258,7 @@ GameObject:
   - component: {fileID: 6060271789670032875}
   - component: {fileID: 4586232402652783572}
   m_Layer: 0
-  m_Name: Textbox2
+  m_Name: TextboxOrder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -317,7 +317,7 @@ GameObject:
   - component: {fileID: 5055633039566711765}
   - component: {fileID: 8312167696002620381}
   m_Layer: 0
-  m_Name: Textbox1
+  m_Name: TextboxEnter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -547,7 +547,7 @@ GameObject:
   - component: {fileID: 2135653395637018845}
   - component: {fileID: 6991019051922300931}
   m_Layer: 0
-  m_Name: Textbox4
+  m_Name: TextboxFailure
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -606,7 +606,7 @@ GameObject:
   - component: {fileID: 444011891452049629}
   - component: {fileID: 8111796652585139419}
   m_Layer: 0
-  m_Name: Textbox3
+  m_Name: TextboxSuccess
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -953,12 +953,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 428b60bcc1b12d54a8d314c27fb9d633, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destination: {fileID: 0}
+  myOrder: 
+  correctOrder: 0
+  entryDestination: {fileID: 0}
+  exitDestination: {fileID: 0}
   patronImage: {fileID: 2854564446021927060}
   walkSpeed: 1
   wobbleSpeed: 1
   wobbleTilt: 15
   wobbleSide: 0
+  isWaddling: 0
+  walkInTextBoxes:
+  - name: Chat Box
+    gameObject: {fileID: 2034414218117547945}
+    showProgress: 0.7
+    hideProgress: 0.2
+  orderTextbox: {fileID: 1097462980255691710}
+  walkOutTextBoxesSuccess:
+  - name: 
+    gameObject: {fileID: 4981445035104185261}
+    showProgress: 0.9
+    hideProgress: 0.5
+  walkOutTextBoxesFailure:
+  - name: 
+    gameObject: {fileID: 4003054236747450300}
+    showProgress: 1
+    hideProgress: 0
 --- !u!114 &6368722531558250224
 MonoBehaviour:
   m_ObjectHideFlags: 0

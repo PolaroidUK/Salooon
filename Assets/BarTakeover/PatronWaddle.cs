@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System;
 using UnityEngine;
 
 public class PatronWaddle : MonoBehaviour
@@ -17,13 +18,21 @@ public class PatronWaddle : MonoBehaviour
     public bool wobbleSide;
     public bool isWaddling;
 
-    public GameObject walkInTextbox;
-    public float walkinStartTalking;
-    public float walkInStopTalking;
+    public List<PatronChatterBox> walkInTextBoxes;
     public GameObject orderTextbox;
-    public GameObject walkOutTextBox;
-    public float walkOutStartTalking;
-    public float walkOutStopTalking;
+    public List<PatronChatterBox> walkOutTextBoxesSuccess;
+    public List<PatronChatterBox> walkOutTextBoxesFailure;
+
+    [Serializable]
+    public class PatronChatterBox
+    {
+        [HideInInspector]
+        public string name = "Chat Box";
+        public GameObject gameObject;
+        public float showProgress;
+        public float hideProgress;
+    }
+
 
     private void Start()
     {
@@ -32,6 +41,8 @@ public class PatronWaddle : MonoBehaviour
 
     public async void WalkIntoView()
     {
+        gameObject.SetActive(true);
+
         float initialDistanceToDestination = Vector3.Distance(transform.position, entryDestination.position);
         float currentDistanceToDestination = 0;
 
@@ -51,9 +62,12 @@ public class PatronWaddle : MonoBehaviour
             }
 
             currentDistanceToDestination = Vector3.Distance(transform.position, entryDestination.position);
-            
-            walkInTextbox.SetActive(currentDistanceToDestination < initialDistanceToDestination * walkinStartTalking &&
-                currentDistanceToDestination > initialDistanceToDestination * walkInStopTalking);
+
+            foreach (PatronChatterBox chatBox in walkInTextBoxes)
+            {
+                chatBox.gameObject.SetActive(currentDistanceToDestination < initialDistanceToDestination * chatBox.showProgress &&
+                    currentDistanceToDestination > initialDistanceToDestination * chatBox.hideProgress);
+            }
             
             await Task.Delay(1);
         }
@@ -87,6 +101,7 @@ public class PatronWaddle : MonoBehaviour
         float initialDistanceToDestination = Vector3.Distance(transform.position, exitDestination.position);
         float currentDistanceToDestination = 0;
 
+        isWaddling = true;
         while (transform.position.x < exitDestination.position.x)
         {
             transform.position += new Vector3(walkSpeed * Time.deltaTime, 0, 0);
@@ -103,11 +118,27 @@ public class PatronWaddle : MonoBehaviour
 
             currentDistanceToDestination = Vector3.Distance(transform.position, exitDestination.position);
 
-            walkOutTextBox.SetActive(currentDistanceToDestination < initialDistanceToDestination * walkinStartTalking &&
-                currentDistanceToDestination > initialDistanceToDestination * walkInStopTalking);
-
+            if (correctOrder)
+            {
+                foreach (PatronChatterBox chatBox in walkOutTextBoxesSuccess)
+                {
+                    chatBox.gameObject.SetActive(currentDistanceToDestination < initialDistanceToDestination * chatBox.showProgress &&
+                        currentDistanceToDestination > initialDistanceToDestination * chatBox.hideProgress);
+                }
+            }
+            else
+            {
+                foreach (PatronChatterBox chatBox in walkOutTextBoxesFailure)
+                {
+                    chatBox.gameObject.SetActive(currentDistanceToDestination < initialDistanceToDestination * chatBox.showProgress &&
+                        currentDistanceToDestination > initialDistanceToDestination * chatBox.hideProgress);
+                }
+            }
 
             await Task.Delay(1);
         }
+
+        isWaddling = false;
+        gameObject.SetActive(false);
     }
 }
