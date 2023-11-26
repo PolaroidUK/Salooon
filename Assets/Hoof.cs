@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Hoof : MonoBehaviour
 {
@@ -28,7 +29,10 @@ public class Hoof : MonoBehaviour
     public void TakeLife()
     {
         lives--;
-        
+        if (lives ==0)
+        {
+            SceneManager.LoadScene("Saloon");
+        }
         UpdateLivesSprites();
     }
     public void UpdateLivesSprites()

@@ -54,7 +54,7 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   previousPosition: {x: 0, y: 0, z: 0}
   timer: 0
-  MoveTime: 0
+  MoveTime: 1
 --- !u!1 &4609700857658533126
 GameObject:
   m_ObjectHideFlags: 0

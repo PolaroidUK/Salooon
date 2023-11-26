@@ -22,13 +22,13 @@ public class SwimmerManager : MonoBehaviour
     [SerializeField] private Dog[] dogs = new Dog[3];
     [SerializeField] private Table table;
     [SerializeField] private Hoof hoof;
-    [SerializeField] private TextMeshProUGUI playerScore;
-    [SerializeField] private TextMeshProUGUI[] dogScores;
     [SerializeField] private int lastSkipId;
     [SerializeField] private int knocker;
     [SerializeField] private GameObject discardPile;
     [SerializeField] private bool wonSchwimmerless;
     [SerializeField] private PlayerStats stats;
+    [SerializeField] private bool playerSkipped;
+    [SerializeField] private ScoreText[] scores;
     
 
     public event Action MoveCards;
@@ -55,13 +55,12 @@ public class SwimmerManager : MonoBehaviour
         gameEnded = false;
         firstRound = true;
         lastRound = false;
-        playerScore.text = "";
+        foreach (ScoreText scoreText in scores)
+        {
+            scoreText.Hide();
+        }
         hoof.UpdateLivesSprites();
         
-        foreach (TextMeshProUGUI t in dogScores)
-        {
-            t.text = "";
-        }
         ShuffleDeck(GetComponentsInChildren<Card>().ToList());
         foreach (Card card in deck)
         {
@@ -100,7 +99,7 @@ public class SwimmerManager : MonoBehaviour
         table.SwapCard(1,hoof.GetHolder(1));
         table.SwapCard(2,hoof.GetHolder(2));
         table.SwapCard(3,hoof.GetHolder(3));
-        
+        playerSkipped = false;
         EndTurn();
     }
 
@@ -111,6 +110,8 @@ public class SwimmerManager : MonoBehaviour
             return;
         }
         print("Skipping");
+        
+        playerSkipped = true;
         EndTurn();
     }
     public void Knock()
@@ -121,6 +122,8 @@ public class SwimmerManager : MonoBehaviour
         }
         print("Knocking");
         lastRound = true;
+        
+        playerSkipped = false;
         EndTurn();
     }
     public void Swap()
@@ -135,6 +138,8 @@ public class SwimmerManager : MonoBehaviour
         }
         print("Swapping");
         table.SwapCard(currentTableSelectedCard,hoof.GetHolder(currentPlayerSelectedCard));
+        
+        playerSkipped = false;
         EndTurn();
     }
 
@@ -259,10 +264,14 @@ public class SwimmerManager : MonoBehaviour
 
     private void EndTurnCheck()
     {
-        if (lastSkipId==currentTurn)
+        if (playerSkipped&&dogs[0].skipped&&dogs[1].skipped&&dogs[2].skipped)
         {
             table.DiscardCards(discardPile);
             table.GiveCards(Draw(), Draw(), Draw());
+            playerSkipped = false;
+            dogs[0].skipped = false;
+            dogs[1].skipped = false;
+            dogs[2].skipped = false;
         }
         if (CalculateScore(hoof.GetCard(1),hoof.GetCard(2),hoof.GetCard(3))>30.5f)
         {
@@ -295,7 +304,7 @@ public class SwimmerManager : MonoBehaviour
         {
             return;
         }
-        int makeMove = dog.MakeMove(table);
+        int makeMove = dog.MakeMove(table,lastRound);
         
         print(makeMove);
         switch (makeMove)
@@ -328,15 +337,16 @@ public class SwimmerManager : MonoBehaviour
 
         float lowestScore = CalculateScore(hoof.GetCard(1),hoof.GetCard(2),hoof.GetCard(3));
         int lowestI = 0;
-        playerScore.text =  lowestScore.ToString();
+        scores[0].ShowScore(lowestScore);
         for (int i = 0; i < 3; i++)
         {
             if (dogs[i].IsOutOfGame())
             {
                 continue;
             }
+
             float s = CalculateScore(dogs[i].GetCard(0), dogs[i].GetCard(1), dogs[i].GetCard(2));
-            dogScores[i].text = s.ToString();
+            scores[1+i].ShowScore(s);
             if (lowestScore>s)
             {
                 lowestScore = s;
@@ -346,17 +356,19 @@ public class SwimmerManager : MonoBehaviour
         if (lowestI ==0)
         {
             hoof.TakeLife();
+            
         }
         else
         {
             dogs[lowestI - 1].TakeLife();
+            if (dogs[0].IsOutOfGame() && dogs[1].IsOutOfGame() && dogs[2].IsOutOfGame() )
+            {
+                stats.hasWonSchwimmerless = true;
+                SceneManager.LoadScene("Saloon");
+            }
         }
 
-        if (dogs[0].IsOutOfGame() && dogs[1].IsOutOfGame() && dogs[2].IsOutOfGame() )
-        {
-            stats.hasWonSchwimmerless = true;
-            SceneManager.LoadScene("Saloon");
-        }
+        
     }
 
     public void NewRound()
