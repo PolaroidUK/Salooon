@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class SwimmerManager : MonoBehaviour
 {
@@ -11,46 +13,76 @@ public class SwimmerManager : MonoBehaviour
     [SerializeField] public bool firstRound =true;
     
     [SerializeField] private bool lastRound;
-    [SerializeField] private bool gameEnded;
+    [SerializeField] public bool gameEnded;
 
     [SerializeField] private float aiTimer;
     [SerializeField] private float aiTurnTime = 1;
-    [SerializeField] private List<CardVisual> deck;
+    [SerializeField] private List<Card> deck;
     [SerializeField] private Dog[] dogs = new Dog[3];
     [SerializeField] private Table table;
     [SerializeField] private Hoof hoof;
     [SerializeField] private TextMeshProUGUI playerScore;
+    [SerializeField] private TextMeshProUGUI[] dogScores;
+    [SerializeField] private int lastSkipId;
+    [SerializeField] private int knocker;
+    [SerializeField] private GameObject discardPile;
+    
     
     public event Action MoveCards;
     public event Action UpdateHolders;
-    public void SelectPlayerCard(int card)
-    {
-        currentPlayerSelectedCard = card;
-    }
-    public void SelectTableCard(int card)
-    {
-        currentTableSelectedCard = card;
-    }
 
     private void Start()
     {
-        foreach (CardVisual card in deck)
+        StartRound();
+    }
+    public void ShuffleDeck(List<Card> list)
+    {
+        List<Card> temp = new List<Card>();
+        temp.AddRange(list);
+
+        for (int i = 0; i < list.Count; i++)
+        {
+            int index = Random.Range(0, temp.Count - 1);
+            deck.Add(temp[index]);
+            temp.RemoveAt(index);
+        }
+    }
+    private void StartRound()
+    {
+        gameEnded = false;
+        firstRound = true;
+        lastRound = false;
+        playerScore.text = "";
+        hoof.UpdateLivesSprites();
+        
+        foreach (TextMeshProUGUI t in dogScores)
+        {
+            t.text = "";
+        }
+        ShuffleDeck(GetComponentsInChildren<Card>().ToList());
+        foreach (Card card in deck)
         {
             card.SetPosition(transform.position);
             card.Hide();
         }
+
         foreach (Dog dog in dogs)
         {
-            dog.GiveCards(Draw(),Draw(),Draw());
+            dog.UpdateLivesSprites();
+            if (!dog.IsOutOfGame())
+            {
+                dog.GiveCards(Draw(), Draw(), Draw());
+            }
         }
-        table.GiveCards(Draw(),Draw(),Draw());
-        hoof.GiveCards(Draw(),Draw(),Draw());
+        
+        table.GiveCards(Draw(), Draw(), Draw());
+        hoof.GiveCards(Draw(), Draw(), Draw());
         MoveCards?.Invoke();
     }
-    
-    public CardVisual Draw()
+
+    public Card Draw()
     {
-        CardVisual drawnCard = deck[0];
+        Card drawnCard = deck[0];
         deck.RemoveAt(0);
         return drawnCard;
     }
@@ -108,11 +140,10 @@ public class SwimmerManager : MonoBehaviour
         currentPlayerSelectedCard = 0;
         currentTableSelectedCard = 0;
         currentTurn = 1;
-        UpdateHolders?.Invoke();
-        MoveCards?.Invoke();
+        EndTurnCheck();
     }
 
-    public float CalculateScore(CardVisual c1,CardVisual c2, CardVisual c3)
+    public static float CalculateScore(Card c1,Card c2, Card c3)
     {
         if (c1.face==c2.face&&c1.face==c3.face)
         {
@@ -150,7 +181,7 @@ public class SwimmerManager : MonoBehaviour
         return highestValue;
     }
     
-    public float FaceConvert(Face face)
+    public static float FaceConvert(Face face)
     {
         switch (face)
         {
@@ -186,30 +217,100 @@ public class SwimmerManager : MonoBehaviour
                 switch (currentTurn)
                 {
                     case 1:
-                        dogs[0].MakeMove(table);
-                        currentTurn = 2;
-                        UpdateHolders?.Invoke();
-                        MoveCards?.Invoke();
-                        break;
-                    case 2:
-                        currentTurn = 3;
-                        UpdateHolders?.Invoke();
-                        MoveCards?.Invoke();
-                        break;
-                    case 3:
-                        currentTurn = 0;
-                        UpdateHolders?.Invoke();
-                        MoveCards?.Invoke();
-                        firstRound = false;
-                        if (lastRound)
+                        if (currentTurn ==knocker && lastRound)
                         {
                             EndRound();
+                            return;
                         }
+                        TakeDogTurn(dogs[0]);
+                        currentTurn = 2;
+                        EndTurnCheck();
+                        break;
+                    case 2:
+                        if (currentTurn ==knocker && lastRound)
+                        {
+                            EndRound();
+                            return;
+                        }
+                        TakeDogTurn(dogs[1]);
+                        currentTurn = 3;
+                        EndTurnCheck();
+                        break;
+                    case 3:
+                        if (currentTurn ==knocker && lastRound)
+                        {
+                            EndRound();
+                            return;
+                        }
+                        TakeDogTurn(dogs[2]);
+                        currentTurn = 0;
+                        firstRound = false;
+                        EndTurnCheck();
                         break;
                     default:
                         break;
                 }
             }
+        }
+    }
+
+    private void EndTurnCheck()
+    {
+        if (lastSkipId==currentTurn)
+        {
+            table.DiscardCards(discardPile);
+            table.GiveCards(Draw(), Draw(), Draw());
+        }
+        if (CalculateScore(hoof.GetCard(1),hoof.GetCard(2),hoof.GetCard(3))>30.5f)
+        {
+            UpdateHolders?.Invoke();
+            MoveCards?.Invoke();
+            EndRound();
+            return;
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            if (CalculateScore(dogs[i].GetCard(0), dogs[i].GetCard(1), dogs[i].GetCard(2))>30.5f)
+            {
+                UpdateHolders?.Invoke();
+                MoveCards?.Invoke();
+                EndRound();
+                return;
+            }
+        }
+        UpdateHolders?.Invoke();
+        MoveCards?.Invoke();
+        if (lastRound && currentTurn==knocker)
+        {
+            EndRound();
+        }
+    }
+
+    private void TakeDogTurn(Dog dog)
+    {
+        if (dog.IsOutOfGame())
+        {
+            return;
+        }
+        int makeMove = dog.MakeMove(table);
+        
+        print(makeMove);
+        switch (makeMove)
+        {
+            case 0:
+                if (lastSkipId > 0)
+                {
+                    lastSkipId = currentTurn;
+                }
+                break;
+            case 1:
+                lastSkipId = -1;
+                break;
+            case 2:
+                lastRound = true;
+                knocker = currentTurn;
+                lastSkipId = -1;
+                break;
         }
     }
 
@@ -222,9 +323,37 @@ public class SwimmerManager : MonoBehaviour
             dog.ShowCards();
         }
 
-        playerScore.text = "Score: " + CalculateScore(hoof.GetCard(1),hoof.GetCard(2),hoof.GetCard(3));
+        float lowestScore = CalculateScore(hoof.GetCard(1),hoof.GetCard(2),hoof.GetCard(3));
+        int lowestI = 0;
+        playerScore.text =  lowestScore.ToString();
+        for (int i = 0; i < 3; i++)
+        {
+            if (dogs[i].IsOutOfGame())
+            {
+                continue;
+            }
+            float s = CalculateScore(dogs[i].GetCard(0), dogs[i].GetCard(1), dogs[i].GetCard(2));
+            dogScores[i].text = s.ToString();
+            if (lowestScore>s)
+            {
+                lowestScore = s;
+                lowestI = i + 1;
+            }
+        }
+        if (lowestI ==0)
+        {
+            hoof.TakeLife();
+        }
+        else
+        {
+            dogs[lowestI - 1].TakeLife();
+        }
     }
 
+    public void NewRound()
+    {
+        StartRound();
+    }
     public void SelectCard(bool isHoof,int cardId)
     {
         if (isHoof)

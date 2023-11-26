@@ -5,7 +5,7 @@ using UnityEngine;
 public class Table : MonoBehaviour
 {
     [SerializeField] private CardHolder[] holders;
-    public void GiveCards(CardVisual c1, CardVisual c2, CardVisual c3)
+    public void GiveCards(Card c1, Card c2, Card c3)
     {
         holders[0].SetCard(c1);
         holders[1].SetCard(c2);
@@ -14,17 +14,24 @@ public class Table : MonoBehaviour
 
     public void SwapCard(int id, CardHolder holder)
     {
-        CardVisual card = holders[id - 1].GetCard();
+        Card card = holders[id - 1].GetCard();
         holders[id - 1].SetCard(holder.GetCard());
         holder.SetCard(card);
     }
 
-    public CardVisual GetCard(int i)
+    public Card GetCard(int i)
     {
         return holders[i].GetCard();
     }
-    public void SetCard(int i, CardVisual card)
+    public void SetCard(int i, Card card)
     {
         holders[i].SetCard(card);
+    }
+
+    public void DiscardCards(GameObject discardPile)
+    {
+        holders[0].DiscardCard(transform.position);
+        holders[1].DiscardCard(transform.position);
+        holders[2].DiscardCard(transform.position);
     }
 }
