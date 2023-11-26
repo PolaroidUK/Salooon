@@ -9,6 +9,7 @@ public class PatronWaddle : MonoBehaviour
     public List<SimonSaysMixingGame.DrinkIngredients> myOrder;
     public bool correctOrder;
 
+    public Transform entryPoint;
     public Transform entryDestination;
     public Transform exitDestination;
     public Transform patronImage;
@@ -36,6 +37,7 @@ public class PatronWaddle : MonoBehaviour
 
     private void Start()
     {
+        transform.position = entryPoint.position;
         WalkIntoView();
     }
 

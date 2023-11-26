@@ -14,11 +14,9 @@ public class SimonSaysMixingGame : MonoBehaviour
     {
         none,
         iceCube,
-        iceCubes,
         citrus,
-        kiwi,
-        umbrella,
-        olives,
+        cucumber,
+        parasol,
         olive
     }
 
@@ -113,5 +111,7 @@ public class SimonSaysMixingGame : MonoBehaviour
     {
         Debug.Log("Crikey! The real Bartender finished his shitey!");
         Debug.Log("Time to skip!");
+
+        //Load the saloon scene
     }
 }
