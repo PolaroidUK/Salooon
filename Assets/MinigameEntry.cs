@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class MinigameEntry : MonoBehaviour
 {
     public int sceneIdForMinigame;
-    private void OnMouseDown()
+    public void LoadScene()
     {
         SceneManager.LoadScene(sceneIdForMinigame);
     }
