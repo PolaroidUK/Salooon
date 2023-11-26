@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SimonSaysMixingGame : MonoBehaviour
 {
@@ -112,6 +113,6 @@ public class SimonSaysMixingGame : MonoBehaviour
         Debug.Log("Crikey! The real Bartender finished his shitey!");
         Debug.Log("Time to skip!");
 
-        //Load the saloon scene
+        SceneManager.LoadScene(1);
     }
 }
